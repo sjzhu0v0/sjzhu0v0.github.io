@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PID Check for Tag_RunPeriod</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      display: grid; 
+      grid-template-columns: 1fr 400px;
+      min-height: 100vh; 
+      background-color: #f9f9f9; 
+    }
+    .sidebar { grid-column: 2; width: 400px; position: fixed; top: 0; right: 0; height: 100%; background-color: #333; color: white; padding-top: 20px; text-align: left; }
+    .sidebar a { display: block; color: white; padding: 10px; text-decoration: none; margin: 5px 0; word-wrap: break-word; overflow-wrap: anywhere;}
+    .sidebar a:hover { background-color: #575757; border-radius: 5px; }
+    .content { grid-column: 1; padding: 20px; flex-grow: 1; word-wrap: break-word; overflow-wrap: anywhere; }
+    .content-section { padding: 20px; text-align: center; word-wrap: break-word; overflow-wrap: anywhere;}
+    img { max-width: 90%; max-height: 500px; border: 2px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); margin-top: 20px; }
+    details { margin-top: 10px; }
+    details img { max-width: 80%; max-height: 300px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+  
+        <div class="sidebar">
+          <h3>Table of Contents</h3>
+          <button onclick="expandAll()">Expand All</button>
+          <button onclick="collapseAll()">Collapse All</button>
+      <a href="#section1">----PID Check for Tag_RunPeriod</a>
+      </div>
+
+  <div class="content">
+    
+      <div class="section" id="section1"><h2>PID Check for Tag_RunPeriod</h2><p></p>
+      </div>
+  </div>
+
+  <script>
+    // JavaScript to handle expand/collapse functionality
+    function expandAll() {
+      const detailsElements = document.querySelectorAll("details");
+      detailsElements.forEach(detail => {
+        detail.open = true;
+      });
+    }
+
+    function collapseAll() {
+      const detailsElements = document.querySelectorAll("details");
+      detailsElements.forEach(detail => {
+        detail.open = false;
+      });
+    }
+  </script>
+  
+</body>
+</html>
+      
