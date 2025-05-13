@@ -1,0 +1,15 @@
+{
+  "main": {
+    "title": "Particle Physics",
+    "description": "The $J/\\psi$ particle is a meson.\\nMass formula: $m = 3.0969\\\\ \\\\text{GeV}/c^2$",
+    "content": [
+      {
+        "nested_section": {
+          "title": "Details",
+          "description": "Nested content\\nWith multiple lines",
+          "content": []
+        }
+      }
+    ]
+  }
+}
