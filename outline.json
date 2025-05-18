@@ -1,0 +1,74 @@
+{
+  "main": {
+    "title": "Outline of $J/\\psi\\ v_{2}$ analysis",
+    "description": "The  particle is a meson. $\\psi$",
+    "content": [
+      "motivation",
+      "data_sample",
+      "event_rec",
+      "event_chararteristics",
+      "jpsi",
+      "charged_tracks",
+      "analysis",
+      "observable",
+      "stat_uncertainty",
+      "resutls",
+      "syst_uncertainty"
+    ]
+  },
+  "motivation": {
+    "title": "Motivation",
+    "description": "",
+    "content": []
+  },
+  "data_sample": {
+    "title": "Data Sample",
+    "description": "",
+    "content": []
+  },
+  "event_rec": {
+    "title": "Event Reconstruction",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics": {
+    "title": "Event Characteristics",
+    "description": "",
+    "content": []
+  },
+  "jpsi": {
+    "title": "$J/\\psi$",
+    "description": "",
+    "content": []
+  },
+  "charged_tracks": {
+    "title": "Charged Tracks",
+    "description": "",
+    "content": []
+  },
+  "analysis": {
+    "title": "Analysis",
+    "description": "",
+    "content": []
+  },
+  "observable": {
+    "title": "Observable",
+    "description": "",
+    "content": []
+  },
+  "stat_uncertainty": {
+    "title": "Statistical Uncertainty",
+    "description": "",
+    "content": []
+  },
+  "resutls": {
+    "title": "Results",
+    "description": "",
+    "content": []
+  },
+  "syst_uncertainty": {
+    "title": "Systematic Uncertainty",
+    "description": "",
+    "content": []
+  }
+}
