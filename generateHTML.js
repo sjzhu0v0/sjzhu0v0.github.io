@@ -130,17 +130,31 @@ fs.exists(jsonFilePath, (exists) => {
         } else if (item.endsWith('.jpg')) {
           html += `<img src="${item}" alt="${section.title} image">`;
         } else if (item.endsWith('.json')) {
-          let content_from_json = fs.readFileSync(item, 'utf8');
+          let isRemote = item.startsWith('http://') || item.startsWith('https://');
+          let jsonContentOrUrl = isRemote ? item : fs.readFileSync(item, 'utf8');
           html += `
-          <div class="section" id="root_plot_${num_files}" position: relative">
+          <div class="section" id="root_plot_${num_files}" style="position: relative;">
+            <p>Loading plot from ${isRemote ? jsonContentOrUrl : 'embedded JSON'}...</p>
           </div>
           <script>
-            function display_root_plot_${num_files}(Core) {
-              let obj = Core.parse(${content_from_json});
-              Core.settings.HandleKeys = false;
-              Core.draw("root_plot_${num_files}", obj, "");
+            async function display_root_plot_${num_files}(Core) {
+              try {
+                let obj;
+                if (${isRemote}) {
+                  const response = await fetch('${jsonContentOrUrl}');
+                  const jsonText = await response.text();
+                  obj = Core.parse(jsonText);
+                } else {
+                  obj = Core.parse(${JSON.stringify(jsonContentOrUrl)});
+                }
+                Core.settings.HandleKeys = false;
+                Core.draw("root_plot_${num_files}", obj, "");
+              } catch (err) {
+                document.getElementById("root_plot_${num_files}").innerHTML = "Failed to load JSON data.";
+                console.error('Error loading JSON:', err);
+              }
             }
-
+        
             function script_load_root_plot_${num_files}(src, on_error) {
               let script = document.createElement('script');
               script.src = src;
@@ -148,7 +162,7 @@ fs.exists(jsonFilePath, (exists) => {
               script.onerror = function () { script.remove(); on_error(); };
               document.head.appendChild(script);
             }
-
+        
             if (typeof requirejs !== 'undefined') {
               requirejs.config({
                 paths: { 'JSRootCore': ['build/jsroot', 'https://root.cern/js/7.4.3/build/jsroot', 'https://jsroot.gsi.de/7.4.3/build/jsroot'] }
@@ -159,7 +173,7 @@ fs.exists(jsonFilePath, (exists) => {
               display_root_plot_${num_files}(JSROOT);
             } else {
               try {
-                var base_url = JSON.parse(document.getElementById('jupyter-config-data').innerHTML).baseUrl;
+                var base_url = JSON.parse(document.getElementById('jupyter-config-data')?.innerHTML || '{}').baseUrl || '/';
               } catch (_) {
                 var base_url = '/';
               }
@@ -170,8 +184,9 @@ fs.exists(jsonFilePath, (exists) => {
                 });
               });
             }
-            </script>`;
+          </script>`;
         }
+
         else if (item.endsWith('.jpg')) {
           html += `<img src="${item}" alt="${section.title} image">`;
         }
