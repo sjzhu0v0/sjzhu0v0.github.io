@@ -1,3 +1,4 @@
 temp/
 *json
 *sh
+!outline.json
