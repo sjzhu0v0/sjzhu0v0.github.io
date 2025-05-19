@@ -186,7 +186,9 @@ fs.exists(jsonFilePath, (exists) => {
           let content_from_json = fs.readFileSync(item, 'utf8');
           html += `...你的现有JSON处理逻辑...`;
         }
-
+        else if (item.startsWith("Description:")) {
+          html += `<p>${item.replace("Description:", "")}</p>`;
+        }
         else if (jsonData[item]) {
           html += `
           <details id="${item}"><summary>${heading}${jsonData[item].title}
@@ -217,9 +219,7 @@ fs.exists(jsonFilePath, (exists) => {
           if (item.endsWith('.jpg') || item.endsWith('.pdf') || item.endsWith('.json')) {
             return;
           }
-          if (item.startsWith("Description:")) {
-            sidebarHTML += `<a href="#${parentId}">${heading}${item.replace("Description:", "")}</a>`;
-          }
+
           if (jsonData[item]) {
             sidebarHTML += `
             <details>
