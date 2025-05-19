@@ -217,6 +217,9 @@ fs.exists(jsonFilePath, (exists) => {
           if (item.endsWith('.jpg') || item.endsWith('.pdf') || item.endsWith('.json')) {
             return;
           }
+          if (item.startsWith("Description:")) {
+            sidebarHTML += `<a href="#${parentId}">${heading}${item.replace("Description:", "")}</a>`;
+          }
           if (jsonData[item]) {
             sidebarHTML += `
             <details>
