@@ -103,7 +103,7 @@
     "title": "Comparison of MinBias and DQ Filter",
     "description": "",
     "content": [
-      "./plot/event_chararteristics_mult_classifier/Comparison_mb_dqfilter_NumContributor.json",
+      "./plot/event_chararteristics_mult_classifier/Comparison_mb_dqfilter_NumContributor.pdf",
       "Description: The distributions of number of vertex contributors are compared between minbias and DQ filter. The dataset is LHC22o_pass4_thin_526641. Both distributions are normalized so the integral of them is equal to each other. The event selection is: $|V_{z}|<10cm$, isTriggerTVX, noITSROFFrameBorder, noTimeFrameBorder, noSameBunchPileup. \\n The event activities for minbias and DQ filter are very different."
     ]
   },
