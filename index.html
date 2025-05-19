@@ -1,220 +1,314 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Outline of $J/\psi\ v_{2}$ analysis</title>
+  <title>TPC PID QA</title>
+  <link rel="icon" href="https://github.com/bulukutlu/TPCQCVis/blob/master/resources/tpc.ico?raw=true">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
+      font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    #container {
+      display: flex;
+      height: 100vh;
+    }
+
+    #fileList {
+      width: 15%;
+      padding: 20px;
+      background-color: #f0f0f0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      transition: width 0.3s ease;
+    }
+
+    #fileList.collapsed {
+      width: 20px;
+    }
+
+    #fileList ul {
+      list-style-type: none;
       padding: 0;
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      min-height: 100vh;
-      background-color: #f9f9f9;
     }
-    .sidebar { 
-      grid-column: 2; 
-      width: 400px; 
-      position: fixed; 
-      top: 0; 
-      right: 0; 
-      height: 100%; 
-      background-color: #e0e0e0;  /* Changed to light gray */
-      color: black;              /* Changed to black */
-      padding-top: 20px; 
-      text-align: left; 
+
+    #fileList h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
-    .sidebar a { 
-      display: block; 
-      color: black;              /* Changed to black */
-      padding: 10px; 
-      text-decoration: none; 
-      margin: 5px 0; 
-      word-wrap: break-word; 
-      overflow-wrap: anywhere;
+
+    #fileList h1 a {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
     }
-    .sidebar a:hover { 
-      background-color: #d0d0d0; /* Lighter gray for hover */
-      border-radius: 5px; 
+    
+    #fileList li {
+      margin-bottom: 10px;
     }
-    .content { 
-      grid-column: 1; 
-      padding: 20px; 
-      flex-grow: 1; 
-      word-wrap: break-word; 
-      overflow-wrap: anywhere; 
+
+    #fileList .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #f6f6f6;
+      color: #000;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
     }
-    .content-section { 
-      padding: 20px; 
-      text-align: center; 
-      word-wrap: break-word; 
-      overflow-wrap: anywhere;
+
+    #fileList .button:hover {
+      background-color: #e0e0e0;
     }
-    img { 
-      max-width: 90%; 
-      max-height: 500px; 
-      border: 2px solid #ddd; 
-      border-radius: 8px; 
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
-      margin-top: 20px; 
+
+    #fileList .button.active {
+      background-color: #8bc34a;
+      color: #fff;
     }
-    details { 
-      margin-top: 10px; 
+
+    #fileList .button::before {
+      margin-right: 5px;
+      font-size: 16px;
     }
-    details img { 
-      max-width: 80%; 
-      max-height: 300px; 
-      margin: 10px 0; 
+
+    #fileList .folder-icon::before {
+      content: "\1F4C1"; /* Folder emoji */
     }
-    .MathJax, .math { 
-      color: #333; 
+
+    #fileList .file-icon::before {
+      content: "\1F4C4"; /* File emoji */
+    }
+
+    #content {
+      flex-grow: 1;
+      padding: 20px;
+      position: relative;
+    }
+
+    #dragHandle {
+      position: absolute;
+      top: 250px;
+      right: 10px;
+      height: 50%;
+      width: 10px;
+      cursor: ew-resize;
+      background-color: #d7d7d7;
+      z-index: 999;
+      border-radius: 4px;
+    }
+
+    #searchBar {
+      padding: 10px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      width: calc(100% - 40px);
+    }
+
+    #buttonContainer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #downloadButton,
+    #openButton {
+      display: none;
+      border-radius: 4px;
+      padding: 8px 15px;
+      background-color: #f6f6f6;
+      color: #000;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      margin-left: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 1px solid #ddd;
+    }
+
+    #downloadButton:hover,
+    #openButton:hover {
+      background-color: #e0e0e0;
     }
   </style>
 </head>
 <body>
-
-  
-        <div class="sidebar">
-          <h3>Table of Contents</h3>
-          <button onclick="expandAll()">Expand All</button>
-          <button onclick="collapseAll()">Collapse All</button>
-      <a href="#section1">----Outline of $J/\psi\ v_{2}$ analysis</a>
-            <details>
-            <summary>Motivation</summary><a href="#motivation">--------Motivation</a>
-            </details>
-            <details>
-            <summary>Data Sample</summary><a href="#data_sample">--------Data Sample</a>
-            </details>
-            <details>
-            <summary>Event Reconstruction</summary><a href="#event_rec">--------Event Reconstruction</a>
-            </details>
-            <details>
-            <summary>Event Characteristics</summary><a href="#event_chararteristics">--------Event Characteristics</a>
-            </details>
-            <details>
-            <summary>$J/\psi$</summary><a href="#jpsi">--------$J/\psi$</a>
-            </details>
-            <details>
-            <summary>Charged Tracks</summary><a href="#charged_tracks">--------Charged Tracks</a>
-            </details>
-            <details>
-            <summary>Analysis</summary><a href="#analysis">--------Analysis</a>
-            </details>
-            <details>
-            <summary>Observable</summary><a href="#observable">--------Observable</a>
-            </details>
-            <details>
-            <summary>Statistical Uncertainty</summary><a href="#stat_uncertainty">--------Statistical Uncertainty</a>
-            </details>
-            <details>
-            <summary>Results</summary><a href="#resutls">--------Results</a>
-            </details>
-            <details>
-            <summary>Systematic Uncertainty</summary><a href="#syst_uncertainty">--------Systematic Uncertainty</a>
-            </details>
+  <div id="container">
+    <div id="fileList">
+      <h1><a href="https://alice-tpc-qc.web.cern.ch/">TPC PID QA</a></h1>
+      <input type="text" id="searchBar" placeholder="Search...">
+      <ul id="fileListItems">
+        <!-- JavaScript will dynamically populate the file list here -->
+      </ul>
+      <div id="dragHandle"></div>
+    </div>
+    <div id="content">
+      <iframe id="fileContent" frameborder="0" marginwidth="0" marginheight="0" width="100%" height="100%"></iframe>
+      <div id="buttonContainer">
+        <a href="" id="downloadButton" download>Download</a>
+        <button id="openButton">Link</button> <!-- New button -->
       </div>
-
-  <div class="content">
-    
-      <div class="section" id="section1"><h2>Outline of $J/\psi\ v_{2}$ analysis</h2><p>The  particle is a meson. $\psi$</p>
-          <details id="motivation"><summary>Motivation
-          </summary>
-      <div class="section" id="motivation"><h2>----Motivation</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="data_sample"><summary>Data Sample
-          </summary>
-      <div class="section" id="data_sample"><h2>----Data Sample</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="event_rec"><summary>Event Reconstruction
-          </summary>
-      <div class="section" id="event_rec"><h2>----Event Reconstruction</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="event_chararteristics"><summary>Event Characteristics
-          </summary>
-      <div class="section" id="event_chararteristics"><h2>----Event Characteristics</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="jpsi"><summary>$J/\psi$
-          </summary>
-      <div class="section" id="jpsi"><h2>----$J/\psi$</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="charged_tracks"><summary>Charged Tracks
-          </summary>
-      <div class="section" id="charged_tracks"><h2>----Charged Tracks</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="analysis"><summary>Analysis
-          </summary>
-      <div class="section" id="analysis"><h2>----Analysis</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="observable"><summary>Observable
-          </summary>
-      <div class="section" id="observable"><h2>----Observable</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="stat_uncertainty"><summary>Statistical Uncertainty
-          </summary>
-      <div class="section" id="stat_uncertainty"><h2>----Statistical Uncertainty</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="resutls"><summary>Results
-          </summary>
-      <div class="section" id="resutls"><h2>----Results</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-          <details id="syst_uncertainty"><summary>Systematic Uncertainty
-          </summary>
-      <div class="section" id="syst_uncertainty"><h2>----Systematic Uncertainty</h2><p>The $J/\psi$ is a meson. $\psi$</p>
-      </div>
-          </details>
-      </div>
+    </div>
   </div>
 
-  <!-- MathJax Configuration -->
   <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\(', '\)']],
-        displayMath: [['$$', '$$'], ['\[', '\]']],
-        processEscapes: true,
-        packages: {'[+]': ['ams', 'color', 'boldsymbol']}
-      },
-      loader: {load: ['[tex]/ams', '[tex]/color', '[tex]/boldsymbol']},
-      options: {
-        ignoreHtmlClass: 'tex2jax_ignore',
-        processHtmlClass: 'tex2jax_process'
+    var dragHandle = document.getElementById("dragHandle");
+    var fileList = document.getElementById("fileList");
+    var initialWidth = fileList.offsetWidth;
+    var mouseDownX = 0;
+
+    dragHandle.addEventListener("mousedown", function(event) {
+      mouseDownX = event.clientX;
+      document.addEventListener("mousemove", resizeFileList);
+      document.addEventListener("mouseup", stopResizeFileList);
+    });
+
+    dragHandle.addEventListener("dblclick", function() {
+      fileList.classList.toggle("collapsed");
+    });
+
+    function resizeFileList(event) {
+      var offsetX = event.clientX - mouseDownX;
+      fileList.style.width = (initialWidth + offsetX) + "px";
+    }
+
+    function stopResizeFileList() {
+      document.removeEventListener("mousemove", resizeFileList);
+      document.removeEventListener("mouseup", stopResizeFileList);
+      initialWidth = fileList.offsetWidth;
+    }
+
+    // Function to load the content of a selected file by navigating to the URL
+    function loadFileContent(file) {
+      var buttons = document.getElementsByClassName("button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
       }
-    };
-  </script>
-  
-  <!-- Load MathJax from CDN -->
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
-  <script>
-    // JavaScript to handle expand/collapse functionality
-    function expandAll() {
-      const detailsElements = document.querySelectorAll("details");
-      detailsElements.forEach(detail => {
-        detail.open = true;
-      });
+      if (file.endsWith("/")) {
+        window.location.href = file;
+      } else {
+        document.getElementById("fileContent").src = file;
+        event.target.classList.add("active");
+        var downloadButton = document.getElementById("downloadButton");
+        downloadButton.href = file;
+        downloadButton.style.display = "inline-block";
+
+        var openButton = document.getElementById("openButton");
+        openButton.style.display = "inline-block"; // Show the open button
+      }
     }
 
-    function collapseAll() {
-      const detailsElements = document.querySelectorAll("details");
-      detailsElements.forEach(detail => {
-        detail.open = false;
-      });
-    }
-  </script>
+    // Function to reset the buttons to their initial state
+    function resetButtons() {
+      var buttons = document.getElementsByClassName("button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+      }
 
+      var downloadButton = document.getElementById("downloadButton");
+      downloadButton.style.display = "none"; // Hide the download button
+
+      var openButton = document.getElementById("openButton");
+      openButton.style.display = "none"; // Hide the open button
+    }
+    // Event listener for open button click
+    var openButton = document.getElementById("openButton");
+    openButton.addEventListener("click", function() {
+      var fileContentSrc = document.getElementById("fileContent").src;
+      window.open(fileContentSrc, "_blank");
+    });
+
+    // Event listener for file list button clicks
+    var fileListItems = document.getElementById("fileListItems");
+    fileListItems.addEventListener("click", function(event) {
+      if (event.target && event.target.nodeName === "BUTTON") {
+        var file = event.target.getAttribute("data-file-path");
+        loadFileContent(file);
+      }
+    });
+
+    // Function to determine the icon class based on whether a line is a file or folder
+    function getIconClass(line) {
+      return line.endsWith("/") ? "folder-icon" : "file-icon";
+    }
+
+    // Function to filter the file list based on the search input
+    function filterFileList(searchText) {
+      var fileList = document.getElementById("fileListItems");
+      var items = fileList.getElementsByTagName("li");
+
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var button = item.getElementsByClassName("button")[0];
+        var line = button.getAttribute("data-file-path").toLowerCase();
+
+        if (line.includes(searchText.toLowerCase())) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      }
+    }
+
+    // Function to populate the file list
+    function populateFileList() {
+      var fileList = document.getElementById("fileListItems");
+      fileList.innerHTML = ""; // Clear the previous list
+
+      var listItem = document.createElement("li");
+      var button = document.createElement("button");
+      button.textContent = "..";
+      button.classList.add("button");
+      button.classList.add("folder-icon");
+      button.setAttribute("data-file-path", "../"); // Change this to the appropriate URL for the encompassing folder
+      button.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default behavior of opening the link
+        loadFileContent("../"); // Change this to the appropriate URL for the encompassing folder
+      });
+
+      listItem.appendChild(button);
+      fileList.appendChild(listItem);
+
+      // Make a request to fetch the file list text file
+      fetch("file_list.txt")
+        .then(response => response.text())
+        .then(data => {
+          var lines = data.trim().split("\n");
+          lines.forEach(line => {
+            // Remove trailing "/" and ".html" extension
+            var filePath = line.replace(/\/$/, "").replace(/\.html$/, "");
+
+            var listItem = document.createElement("li");
+            var button = document.createElement("button");
+            button.textContent = filePath;
+            button.classList.add("button");
+            button.classList.add(getIconClass(line));
+            button.setAttribute("data-file-path", line);
+            button.addEventListener("click", function(event) {
+              event.preventDefault(); // Prevent default behavior of opening the link
+              loadFileContent(line);
+            });
+
+            listItem.appendChild(button);
+            fileList.appendChild(listItem);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+
+    // Event listener for search bar input
+    var searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", function(event) {
+      var searchText = event.target.value;
+      filterFileList(searchText);
+    });
+
+    // Call the function to populate the file list on page load
+    populateFileList();
+
+  </script>
 </body>
 </html>
-      
