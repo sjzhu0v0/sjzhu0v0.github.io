@@ -265,10 +265,11 @@ fs.exists(jsonFilePath, (exists) => {
       top: 0; 
       right: 0; 
       height: 100%; 
-      background-color: #e0e0e0;  /* Changed to light gray */
-      color: black;              /* Changed to black */
+      background-color: #e0e0e0;
+      color: black;
       padding-top: 20px; 
-      text-align: left; 
+      text-align: left;
+      overflow-y: auto;  /* Enable vertical scrolling */
     }
     .sidebar a { 
       display: block; 
