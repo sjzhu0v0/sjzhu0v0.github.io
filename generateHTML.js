@@ -187,7 +187,7 @@ fs.exists(jsonFilePath, (exists) => {
           html += `...你的现有JSON处理逻辑...`;
         }
         else if (item.startsWith("Description:")) {
-          html += `<p>${item.replace("Description:", "")}</p>`;
+          html += `<p>${item}</p>`;
         }
         else if (jsonData[item]) {
           html += `
