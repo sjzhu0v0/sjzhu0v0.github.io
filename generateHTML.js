@@ -171,6 +171,21 @@ fs.exists(jsonFilePath, (exists) => {
             }
             </script>`;
         }
+        else if (item.endsWith('.jpg')) {
+          html += `<img src="${item}" alt="${section.title} image">`;
+        }
+        else if (item.endsWith('.pdf') || item.startsWith('http') && item.includes('.pdf')) {
+          html += `
+            <div style="margin: 20px 0;">
+              <p>Embedded PDF: <a href="${item}" target="_blank">${item}</a></p>
+              <embed src="${item}" width="800" height="600" type="application/pdf">
+            </div>`;
+        }
+        else if (item.endsWith('.json')) {
+          let content_from_json = fs.readFileSync(item, 'utf8');
+          html += `...你的现有JSON处理逻辑...`;
+        }
+
         else if (jsonData[item]) {
           html += `
           <details id="${item}"><summary>${jsonData[item].title}
@@ -198,13 +213,13 @@ fs.exists(jsonFilePath, (exists) => {
       function generateLinks(section, parentId, heading = '') {
         sidebarHTML += `<a href="#${parentId}">${heading}${section.title}</a>`;
         section.content.forEach(item => {
-          if (item.endsWith('.jpg')) {
+          if (item.endsWith('.jpg') || item.endsWith('.pdf') || item.endsWith('.json')) {
             return;
           }
           if (jsonData[item]) {
             sidebarHTML += `
             <details>
-            <summary>${jsonData[item].title}</summary>`;
+            <summary>${heading}${jsonData[item].title}</summary>`;
             headingNew = heading + '----';
             generateLinks(jsonData[item], item, headingNew);
             sidebarHTML += `
@@ -222,7 +237,7 @@ fs.exists(jsonFilePath, (exists) => {
 
     const sidebar = generateSidebar();
     generateHTML(jsonData.main, 'section1').then(htmlContent => {
-const finalHTML = `
+      const finalHTML = `
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -29,30 +29,164 @@
   "event_rec": {
     "title": "Event Reconstruction",
     "description": "",
-    "content": []
+    "content": [
+      "event_rec_association",
+      "event_rec_vertex",
+      "event_rec_selection"
+    ]
   },
-  "event_chararteristics": {
-    "title": "Event Characteristics",
+  "event_rec_association": {
+    "title": "Association",
     "description": "",
     "content": []
   },
+  "event_rec_vertex": {
+    "title": "Vertex",
+    "description": "",
+    "content": []
+  },
+  "event_rec_selection": {
+    "title": "Selection",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics": {
+    "title": "Event Characteristics and Multiplicity Determination",
+    "description": "",
+    "content": [
+      "event_chararteristics_mult_classifier",
+      "event_chararteristics_forward_detector_response"
+    ]
+  },
+  "event_chararteristics_mult_classifier": {
+    "title": "Multiplicity Classifier",
+    "description": "",
+    "content": [
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity"
+    ]
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity": {
+    "title": "Track Multiplicity Midrapidity",
+    "description": "",
+    "content": [
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its",
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only",
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter",
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation"
+    ]
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its": {
+    "title": "TPC-ITS",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only": {
+    "title": "ITS only",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter": {
+    "title": "Exclude $J/\\psi$ Daughter",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation": {
+    "title": "Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron",
+    "description": "",
+    "content": []
+  },
+  "event_chararteristics_forward_detector_response": {
+    "title": "Forward Detector Response",
+    "description": "",
+    "content": [
+      "event_chararteristics_forward_detector_response_ft0c_ft0a",
+      "event_chararteristics_forward_detector_response_mft"
+    ]
+  },
   "jpsi": {
     "title": "$J/\\psi$",
+    "description": "",
+    "content": [
+      "jpsi_track_selection_for_daughter",
+      "jpsi_pair_selection",
+      "jpsi_efficiency_pt_rapidity_mult_differential"
+    ]
+  },
+  "jpsi_track_selection_for_daughter": {
+    "title": "Track Selection for Daughter",
+    "description": "",
+    "content": []
+  },
+  "jpsi_pair_selection": {
+    "title": "Pair Selection",
+    "description": "",
+    "content": []
+  },
+  "jpsi_efficiency_pt_rapidity_mult_differential": {
+    "title": "Efficiency $p_{T}$, Rapidity and Multiplicity Differential",
     "description": "",
     "content": []
   },
   "charged_tracks": {
     "title": "Charged Tracks",
     "description": "",
-    "content": []
+    "content": [
+      "charged_tracks_tracking_configuration",
+      "charged_tracks_track_selection",
+      "charged_tracks_track_efficiency_pt_rapidity_mult"
+    ]
   },
-  "analysis": {
-    "title": "Analysis",
+  "charged_tracks_tracking_configuration": {
+    "title": "Tracking Configuration",
     "description": "",
     "content": []
   },
-  "observable": {
-    "title": "Observable",
+  "charged_tracks_track_selection": {
+    "title": "Track Selection",
+    "description": "",
+    "content": []
+  },
+  "charged_tracks_track_efficiency_pt_rapidity_mult": {
+    "title": "Track Efficiency: $p_{T}$, Rapidity and Multiplicity",
+    "description": "",
+    "content": []
+  },
+  "analysis_observable": {
+    "title": "Analysis and Observables",
+    "description": "",
+    "content": [
+      "analysis_observable_deltaeta_deltaphi_measurement",
+      "analysis_observable_cumulant_measurement"
+    ]
+  },
+  "analysis_observable_deltaeta_deltaphi_measurement": {
+    "title": "$\\Delta \\eta$-$\\Delta \\phi$ Measurement",
+    "description": "",
+    "content": [
+      "analysis_observable_deltaeta_deltaphi_measurement_correction"
+    ]
+  },
+  "analysis_observable_deltaeta_deltaphi_measurement_correction": {
+    "title": "Correction: Mix Event – Multi Dimension",
+    "description": "",
+    "content": [
+      "analysis_observable_deltaeta_deltaphi_measurement_correction_multDim"
+    ]
+  },
+  "analysis_observable_deltaeta_deltaphi_measurement_correction_multDim": {
+    "title": "Run, Multiplicity and $J/\\psi$ $p_{T}$",
+    "description": "",
+    "content": []
+  },
+  "analysis_observable_cumulant_measurement": {
+    "title": "Cumulant Measurement 2nd and 1st Order",
+    "description": "",
+    "content": [
+      "analysis_observable_cumulant_measurement_correction"
+    ]
+  },
+  "analysis_observable_cumulant_measurement_correction": {
+    "title": "Correction: Run, $p_{T}$, Multiplicity, $\\eta$",
     "description": "",
     "content": []
   },
@@ -64,11 +198,29 @@
   "resutls": {
     "title": "Results",
     "description": "",
+    "content": [
+      "results_deltaeta_deltaphi_measurement",
+      "results_cumulant_measurement"
+    ]
+  },
+  "results_deltaeta_deltaphi_measurement": {
+    "title": "$\\Delta \\eta$-$\\Delta \\phi$ Measurement: Multiplicity, $p_{T_{J/\\psi}}$, $p_{T_{hadron}}$ (low $p_{T}$ and high $p_{T}$)",
+    "description": "",
     "content": []
+  },
+  "results_cumulant_measurement": {
+    "title": "Cumulant Measurement 2nd and 1st Order",
+    "description": "",
+    "content": [
+      "results_cumulant_measurement_correction"
+    ]
   },
   "syst_uncertainty": {
     "title": "Systematic Uncertainty",
     "description": "",
-    "content": []
+    "content": [
+      "syst_uncertainty_barlow_criteria",
+      "syst_uncertainty_variation"
+    ]
   }
 }

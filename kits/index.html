@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TPC PID QA</title>
+  <link rel="icon" href="https://github.com/bulukutlu/TPCQCVis/blob/master/resources/tpc.ico?raw=true">
+  <style>
+    body {
+      font-family: "Helvetica", Arial, sans-serif;
+    }
+
+    #container {
+      display: flex;
+      height: 100vh;
+    }
+
+    #fileList {
+      width: 15%;
+      padding: 20px;
+      background-color: #f0f0f0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      transition: width 0.3s ease;
+    }
+
+    #fileList.collapsed {
+      width: 20px;
+    }
+
+    #fileList ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #fileList h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    #fileList h1 a {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
+    }
+    
+    #fileList li {
+      margin-bottom: 10px;
+    }
+
+    #fileList .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #f6f6f6;
+      color: #000;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    #fileList .button:hover {
+      background-color: #e0e0e0;
+    }
+
+    #fileList .button.active {
+      background-color: #8bc34a;
+      color: #fff;
+    }
+
+    #fileList .button::before {
+      margin-right: 5px;
+      font-size: 16px;
+    }
+
+    #fileList .folder-icon::before {
+      content: "\1F4C1"; /* Folder emoji */
+    }
+
+    #fileList .file-icon::before {
+      content: "\1F4C4"; /* File emoji */
+    }
+
+    #content {
+      flex-grow: 1;
+      padding: 20px;
+      position: relative;
+    }
+
+    #dragHandle {
+      position: absolute;
+      top: 250px;
+      right: 10px;
+      height: 50%;
+      width: 10px;
+      cursor: ew-resize;
+      background-color: #d7d7d7;
+      z-index: 999;
+      border-radius: 4px;
+    }
+
+    #searchBar {
+      padding: 10px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      width: calc(100% - 40px);
+    }
+
+    #buttonContainer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #downloadButton,
+    #openButton {
+      display: none;
+      border-radius: 4px;
+      padding: 8px 15px;
+      background-color: #f6f6f6;
+      color: #000;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      margin-left: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 1px solid #ddd;
+    }
+
+    #downloadButton:hover,
+    #openButton:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="fileList">
+      <h1><a href="https://alice-tpc-qc.web.cern.ch/">TPC PID QA</a></h1>
+      <input type="text" id="searchBar" placeholder="Search...">
+      <ul id="fileListItems">
+        <!-- JavaScript will dynamically populate the file list here -->
+      </ul>
+      <div id="dragHandle"></div>
+    </div>
+    <div id="content">
+      <iframe id="fileContent" frameborder="0" marginwidth="0" marginheight="0" width="100%" height="100%"></iframe>
+      <div id="buttonContainer">
+        <a href="" id="downloadButton" download>Download</a>
+        <button id="openButton">Link</button> <!-- New button -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var dragHandle = document.getElementById("dragHandle");
+    var fileList = document.getElementById("fileList");
+    var initialWidth = fileList.offsetWidth;
+    var mouseDownX = 0;
+
+    dragHandle.addEventListener("mousedown", function(event) {
+      mouseDownX = event.clientX;
+      document.addEventListener("mousemove", resizeFileList);
+      document.addEventListener("mouseup", stopResizeFileList);
+    });
+
+    dragHandle.addEventListener("dblclick", function() {
+      fileList.classList.toggle("collapsed");
+    });
+
+    function resizeFileList(event) {
+      var offsetX = event.clientX - mouseDownX;
+      fileList.style.width = (initialWidth + offsetX) + "px";
+    }
+
+    function stopResizeFileList() {
+      document.removeEventListener("mousemove", resizeFileList);
+      document.removeEventListener("mouseup", stopResizeFileList);
+      initialWidth = fileList.offsetWidth;
+    }
+
+    // Function to load the content of a selected file by navigating to the URL
+    function loadFileContent(file) {
+      var buttons = document.getElementsByClassName("button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+      }
+
+      if (file.endsWith("/")) {
+        window.location.href = file;
+      } else {
+        document.getElementById("fileContent").src = file;
+        event.target.classList.add("active");
+        var downloadButton = document.getElementById("downloadButton");
+        downloadButton.href = file;
+        downloadButton.style.display = "inline-block";
+
+        var openButton = document.getElementById("openButton");
+        openButton.style.display = "inline-block"; // Show the open button
+      }
+    }
+
+    // Function to reset the buttons to their initial state
+    function resetButtons() {
+      var buttons = document.getElementsByClassName("button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+      }
+
+      var downloadButton = document.getElementById("downloadButton");
+      downloadButton.style.display = "none"; // Hide the download button
+
+      var openButton = document.getElementById("openButton");
+      openButton.style.display = "none"; // Hide the open button
+    }
+    // Event listener for open button click
+    var openButton = document.getElementById("openButton");
+    openButton.addEventListener("click", function() {
+      var fileContentSrc = document.getElementById("fileContent").src;
+      window.open(fileContentSrc, "_blank");
+    });
+
+    // Event listener for file list button clicks
+    var fileListItems = document.getElementById("fileListItems");
+    fileListItems.addEventListener("click", function(event) {
+      if (event.target && event.target.nodeName === "BUTTON") {
+        var file = event.target.getAttribute("data-file-path");
+        loadFileContent(file);
+      }
+    });
+
+    // Function to determine the icon class based on whether a line is a file or folder
+    function getIconClass(line) {
+      return line.endsWith("/") ? "folder-icon" : "file-icon";
+    }
+
+    // Function to filter the file list based on the search input
+    function filterFileList(searchText) {
+      var fileList = document.getElementById("fileListItems");
+      var items = fileList.getElementsByTagName("li");
+
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var button = item.getElementsByClassName("button")[0];
+        var line = button.getAttribute("data-file-path").toLowerCase();
+
+        if (line.includes(searchText.toLowerCase())) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      }
+    }
+
+    // Function to populate the file list
+    function populateFileList() {
+      var fileList = document.getElementById("fileListItems");
+      fileList.innerHTML = ""; // Clear the previous list
+
+      var listItem = document.createElement("li");
+      var button = document.createElement("button");
+      button.textContent = "..";
+      button.classList.add("button");
+      button.classList.add("folder-icon");
+      button.setAttribute("data-file-path", "../"); // Change this to the appropriate URL for the encompassing folder
+      button.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default behavior of opening the link
+        loadFileContent("../"); // Change this to the appropriate URL for the encompassing folder
+      });
+
+      listItem.appendChild(button);
+      fileList.appendChild(listItem);
+
+      // Make a request to fetch the file list text file
+      fetch("file_list.txt")
+        .then(response => response.text())
+        .then(data => {
+          var lines = data.trim().split("\n");
+          lines.forEach(line => {
+            // Remove trailing "/" and ".html" extension
+            var filePath = line.replace(/\/$/, "").replace(/\.html$/, "");
+
+            var listItem = document.createElement("li");
+            var button = document.createElement("button");
+            button.textContent = filePath;
+            button.classList.add("button");
+            button.classList.add(getIconClass(line));
+            button.setAttribute("data-file-path", line);
+            button.addEventListener("click", function(event) {
+              event.preventDefault(); // Prevent default behavior of opening the link
+              loadFileContent(line);
+            });
+
+            listItem.appendChild(button);
+            fileList.appendChild(listItem);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+
+    // Event listener for search bar input
+    var searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", function(event) {
+      var searchText = event.target.value;
+      filterFileList(searchText);
+    });
+
+    // Call the function to populate the file list on page load
+    populateFileList();
+
+  </script>
+</body>
+</html>

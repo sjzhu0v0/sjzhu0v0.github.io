@@ -1,314 +1,348 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TPC PID QA</title>
-  <link rel="icon" href="https://github.com/bulukutlu/TPCQCVis/blob/master/resources/tpc.ico?raw=true">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outline of $J/\psi\ v_{2}$ analysis</title>
   <style>
     body {
-      font-family: "Helvetica", Arial, sans-serif;
-    }
-
-    #container {
-      display: flex;
-      height: 100vh;
-    }
-
-    #fileList {
-      width: 15%;
-      padding: 20px;
-      background-color: #f0f0f0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      position: relative;
-      transition: width 0.3s ease;
-    }
-
-    #fileList.collapsed {
-      width: 20px;
-    }
-
-    #fileList ul {
-      list-style-type: none;
+      font-family: Arial, sans-serif;
+      margin: 0;
       padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      min-height: 100vh;
+      background-color: #f9f9f9;
     }
-
-    #fileList h1 {
-      text-align: center;
-      font-size: 28px;
-      margin-top: 10px;
-      margin-bottom: 10px;
+    .sidebar { 
+      grid-column: 2; 
+      width: 400px; 
+      position: fixed; 
+      top: 0; 
+      right: 0; 
+      height: 100%; 
+      background-color: #e0e0e0;  /* Changed to light gray */
+      color: black;              /* Changed to black */
+      padding-top: 20px; 
+      text-align: left; 
     }
-
-    #fileList h1 a {
-      color: inherit;
-      text-decoration: inherit;
-      cursor: pointer;
+    .sidebar a { 
+      display: block; 
+      color: black;              /* Changed to black */
+      padding: 10px; 
+      text-decoration: none; 
+      margin: 5px 0; 
+      word-wrap: break-word; 
+      overflow-wrap: anywhere;
     }
-    
-    #fileList li {
-      margin-bottom: 10px;
+    .sidebar a:hover { 
+      background-color: #d0d0d0; /* Lighter gray for hover */
+      border-radius: 5px; 
     }
-
-    #fileList .button {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #f6f6f6;
-      color: #000;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
+    .content { 
+      grid-column: 1; 
+      padding: 20px; 
+      flex-grow: 1; 
+      word-wrap: break-word; 
+      overflow-wrap: anywhere; 
     }
-
-    #fileList .button:hover {
-      background-color: #e0e0e0;
+    .content-section { 
+      padding: 20px; 
+      text-align: center; 
+      word-wrap: break-word; 
+      overflow-wrap: anywhere;
     }
-
-    #fileList .button.active {
-      background-color: #8bc34a;
-      color: #fff;
+    img { 
+      max-width: 90%; 
+      max-height: 500px; 
+      border: 2px solid #ddd; 
+      border-radius: 8px; 
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+      margin-top: 20px; 
     }
-
-    #fileList .button::before {
-      margin-right: 5px;
-      font-size: 16px;
+    details { 
+      margin-top: 10px; 
     }
-
-    #fileList .folder-icon::before {
-      content: "\1F4C1"; /* Folder emoji */
+    details img { 
+      max-width: 80%; 
+      max-height: 300px; 
+      margin: 10px 0; 
     }
-
-    #fileList .file-icon::before {
-      content: "\1F4C4"; /* File emoji */
-    }
-
-    #content {
-      flex-grow: 1;
-      padding: 20px;
-      position: relative;
-    }
-
-    #dragHandle {
-      position: absolute;
-      top: 250px;
-      right: 10px;
-      height: 50%;
-      width: 10px;
-      cursor: ew-resize;
-      background-color: #d7d7d7;
-      z-index: 999;
-      border-radius: 4px;
-    }
-
-    #searchBar {
-      padding: 10px;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-      width: calc(100% - 40px);
-    }
-
-    #buttonContainer {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    #downloadButton,
-    #openButton {
-      display: none;
-      border-radius: 4px;
-      padding: 8px 15px;
-      background-color: #f6f6f6;
-      color: #000;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-      margin-left: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-    }
-
-    #downloadButton:hover,
-    #openButton:hover {
-      background-color: #e0e0e0;
+    .MathJax, .math { 
+      color: #333; 
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <div id="fileList">
-      <h1><a href="https://alice-tpc-qc.web.cern.ch/">TPC PID QA</a></h1>
-      <input type="text" id="searchBar" placeholder="Search...">
-      <ul id="fileListItems">
-        <!-- JavaScript will dynamically populate the file list here -->
-      </ul>
-      <div id="dragHandle"></div>
-    </div>
-    <div id="content">
-      <iframe id="fileContent" frameborder="0" marginwidth="0" marginheight="0" width="100%" height="100%"></iframe>
-      <div id="buttonContainer">
-        <a href="" id="downloadButton" download>Download</a>
-        <button id="openButton">Link</button> <!-- New button -->
+
+  
+        <div class="sidebar">
+          <h3>Table of Contents</h3>
+          <button onclick="expandAll()">Expand All</button>
+          <button onclick="collapseAll()">Collapse All</button>
+      <a href="#section1">----Outline of $J/\psi\ v_{2}$ analysis</a>
+            <details>
+            <summary>----Motivation</summary><a href="#motivation">--------Motivation</a>
+            </details>
+            <details>
+            <summary>----Data Sample</summary><a href="#data_sample">--------Data Sample</a>
+            </details>
+            <details>
+            <summary>----Event Reconstruction</summary><a href="#event_rec">--------Event Reconstruction</a>
+            <details>
+            <summary>--------Association</summary><a href="#event_rec_association">------------Association</a>
+            </details>
+            <details>
+            <summary>--------Vertex</summary><a href="#event_rec_vertex">------------Vertex</a>
+            </details>
+            <details>
+            <summary>--------Selection</summary><a href="#event_rec_selection">------------Selection</a>
+            </details>
+            </details>
+            <details>
+            <summary>----Event Characteristics and Multiplicity Determination</summary><a href="#event_chararteristics">--------Event Characteristics and Multiplicity Determination</a>
+            <details>
+            <summary>--------Multiplicity Classifier</summary><a href="#event_chararteristics_mult_classifier">------------Multiplicity Classifier</a>
+            <details>
+            <summary>------------Track Multiplicity Midrapidity</summary><a href="#event_chararteristics_mult_classifier_track_multiplicity_midrapidity">----------------Track Multiplicity Midrapidity</a>
+            <details>
+            <summary>----------------TPC-ITS</summary><a href="#event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its">--------------------TPC-ITS</a>
+            </details>
+            <details>
+            <summary>----------------ITS only</summary><a href="#event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only">--------------------ITS only</a>
+            </details>
+            <details>
+            <summary>----------------Exclude $J/\psi$ Daughter</summary><a href="#event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter">--------------------Exclude $J/\psi$ Daughter</a>
+            </details>
+            <details>
+            <summary>----------------Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron</summary><a href="#event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation">--------------------Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron</a>
+            </details>
+            </details>
+            </details>
+            <details>
+            <summary>--------Forward Detector Response</summary><a href="#event_chararteristics_forward_detector_response">------------Forward Detector Response</a>
+            </details>
+            </details>
+            <details>
+            <summary>----$J/\psi$</summary><a href="#jpsi">--------$J/\psi$</a>
+            <details>
+            <summary>--------Track Selection for Daughter</summary><a href="#jpsi_track_selection_for_daughter">------------Track Selection for Daughter</a>
+            </details>
+            <details>
+            <summary>--------Pair Selection</summary><a href="#jpsi_pair_selection">------------Pair Selection</a>
+            </details>
+            <details>
+            <summary>--------Efficiency $p_{T}$, Rapidity and Multiplicity Differential</summary><a href="#jpsi_efficiency_pt_rapidity_mult_differential">------------Efficiency $p_{T}$, Rapidity and Multiplicity Differential</a>
+            </details>
+            </details>
+            <details>
+            <summary>----Charged Tracks</summary><a href="#charged_tracks">--------Charged Tracks</a>
+            <details>
+            <summary>--------Tracking Configuration</summary><a href="#charged_tracks_tracking_configuration">------------Tracking Configuration</a>
+            </details>
+            <details>
+            <summary>--------Track Selection</summary><a href="#charged_tracks_track_selection">------------Track Selection</a>
+            </details>
+            <details>
+            <summary>--------Track Efficiency: $p_{T}$, Rapidity and Multiplicity</summary><a href="#charged_tracks_track_efficiency_pt_rapidity_mult">------------Track Efficiency: $p_{T}$, Rapidity and Multiplicity</a>
+            </details>
+            </details>
+            <details>
+            <summary>----Statistical Uncertainty</summary><a href="#stat_uncertainty">--------Statistical Uncertainty</a>
+            </details>
+            <details>
+            <summary>----Results</summary><a href="#resutls">--------Results</a>
+            <details>
+            <summary>--------$\Delta \eta$-$\Delta \phi$ Measurement: Multiplicity, $p_{T_{J/\psi}}$, $p_{T_{hadron}}$ (low $p_{T}$ and high $p_{T}$)</summary><a href="#results_deltaeta_deltaphi_measurement">------------$\Delta \eta$-$\Delta \phi$ Measurement: Multiplicity, $p_{T_{J/\psi}}$, $p_{T_{hadron}}$ (low $p_{T}$ and high $p_{T}$)</a>
+            </details>
+            <details>
+            <summary>--------Cumulant Measurement 2nd and 1st Order</summary><a href="#results_cumulant_measurement">------------Cumulant Measurement 2nd and 1st Order</a>
+            </details>
+            </details>
+            <details>
+            <summary>----Systematic Uncertainty</summary><a href="#syst_uncertainty">--------Systematic Uncertainty</a>
+            </details>
       </div>
-    </div>
+
+  <div class="content">
+    
+      <div class="section" id="section1"><h2>Outline of $J/\psi\ v_{2}$ analysis</h2><p>The  particle is a meson. $\psi$</p>
+          <details id="motivation"><summary>Motivation
+          </summary>
+      <div class="section" id="motivation"><h2>----Motivation</h2><p></p>
+      </div>
+          </details>
+          <details id="data_sample"><summary>Data Sample
+          </summary>
+      <div class="section" id="data_sample"><h2>----Data Sample</h2><p></p>
+      </div>
+          </details>
+          <details id="event_rec"><summary>Event Reconstruction
+          </summary>
+      <div class="section" id="event_rec"><h2>----Event Reconstruction</h2><p></p>
+          <details id="event_rec_association"><summary>Association
+          </summary>
+      <div class="section" id="event_rec_association"><h2>--------Association</h2><p></p>
+      </div>
+          </details>
+          <details id="event_rec_vertex"><summary>Vertex
+          </summary>
+      <div class="section" id="event_rec_vertex"><h2>--------Vertex</h2><p></p>
+      </div>
+          </details>
+          <details id="event_rec_selection"><summary>Selection
+          </summary>
+      <div class="section" id="event_rec_selection"><h2>--------Selection</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="event_chararteristics"><summary>Event Characteristics and Multiplicity Determination
+          </summary>
+      <div class="section" id="event_chararteristics"><h2>----Event Characteristics and Multiplicity Determination</h2><p></p>
+          <details id="event_chararteristics_mult_classifier"><summary>Multiplicity Classifier
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier"><h2>--------Multiplicity Classifier</h2><p></p>
+          <details id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity"><summary>Track Multiplicity Midrapidity
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity"><h2>------------Track Multiplicity Midrapidity</h2><p></p>
+          <details id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its"><summary>TPC-ITS
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its"><h2>----------------TPC-ITS</h2><p></p>
+      </div>
+          </details>
+          <details id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only"><summary>ITS only
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only"><h2>----------------ITS only</h2><p></p>
+      </div>
+          </details>
+          <details id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter"><summary>Exclude $J/\psi$ Daughter
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter"><h2>----------------Exclude $J/\psi$ Daughter</h2><p></p>
+      </div>
+          </details>
+          <details id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation"><summary>Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron
+          </summary>
+      <div class="section" id="event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation"><h2>----------------Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="event_chararteristics_forward_detector_response"><summary>Forward Detector Response
+          </summary>
+      <div class="section" id="event_chararteristics_forward_detector_response"><h2>--------Forward Detector Response</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="jpsi"><summary>$J/\psi$
+          </summary>
+      <div class="section" id="jpsi"><h2>----$J/\psi$</h2><p></p>
+          <details id="jpsi_track_selection_for_daughter"><summary>Track Selection for Daughter
+          </summary>
+      <div class="section" id="jpsi_track_selection_for_daughter"><h2>--------Track Selection for Daughter</h2><p></p>
+      </div>
+          </details>
+          <details id="jpsi_pair_selection"><summary>Pair Selection
+          </summary>
+      <div class="section" id="jpsi_pair_selection"><h2>--------Pair Selection</h2><p></p>
+      </div>
+          </details>
+          <details id="jpsi_efficiency_pt_rapidity_mult_differential"><summary>Efficiency $p_{T}$, Rapidity and Multiplicity Differential
+          </summary>
+      <div class="section" id="jpsi_efficiency_pt_rapidity_mult_differential"><h2>--------Efficiency $p_{T}$, Rapidity and Multiplicity Differential</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="charged_tracks"><summary>Charged Tracks
+          </summary>
+      <div class="section" id="charged_tracks"><h2>----Charged Tracks</h2><p></p>
+          <details id="charged_tracks_tracking_configuration"><summary>Tracking Configuration
+          </summary>
+      <div class="section" id="charged_tracks_tracking_configuration"><h2>--------Tracking Configuration</h2><p></p>
+      </div>
+          </details>
+          <details id="charged_tracks_track_selection"><summary>Track Selection
+          </summary>
+      <div class="section" id="charged_tracks_track_selection"><h2>--------Track Selection</h2><p></p>
+      </div>
+          </details>
+          <details id="charged_tracks_track_efficiency_pt_rapidity_mult"><summary>Track Efficiency: $p_{T}$, Rapidity and Multiplicity
+          </summary>
+      <div class="section" id="charged_tracks_track_efficiency_pt_rapidity_mult"><h2>--------Track Efficiency: $p_{T}$, Rapidity and Multiplicity</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="stat_uncertainty"><summary>Statistical Uncertainty
+          </summary>
+      <div class="section" id="stat_uncertainty"><h2>----Statistical Uncertainty</h2><p></p>
+      </div>
+          </details>
+          <details id="resutls"><summary>Results
+          </summary>
+      <div class="section" id="resutls"><h2>----Results</h2><p></p>
+          <details id="results_deltaeta_deltaphi_measurement"><summary>$\Delta \eta$-$\Delta \phi$ Measurement: Multiplicity, $p_{T_{J/\psi}}$, $p_{T_{hadron}}$ (low $p_{T}$ and high $p_{T}$)
+          </summary>
+      <div class="section" id="results_deltaeta_deltaphi_measurement"><h2>--------$\Delta \eta$-$\Delta \phi$ Measurement: Multiplicity, $p_{T_{J/\psi}}$, $p_{T_{hadron}}$ (low $p_{T}$ and high $p_{T}$)</h2><p></p>
+      </div>
+          </details>
+          <details id="results_cumulant_measurement"><summary>Cumulant Measurement 2nd and 1st Order
+          </summary>
+      <div class="section" id="results_cumulant_measurement"><h2>--------Cumulant Measurement 2nd and 1st Order</h2><p></p>
+      </div>
+          </details>
+      </div>
+          </details>
+          <details id="syst_uncertainty"><summary>Systematic Uncertainty
+          </summary>
+      <div class="section" id="syst_uncertainty"><h2>----Systematic Uncertainty</h2><p></p>
+      </div>
+          </details>
+      </div>
   </div>
 
+  <!-- MathJax Configuration -->
   <script>
-    var dragHandle = document.getElementById("dragHandle");
-    var fileList = document.getElementById("fileList");
-    var initialWidth = fileList.offsetWidth;
-    var mouseDownX = 0;
-
-    dragHandle.addEventListener("mousedown", function(event) {
-      mouseDownX = event.clientX;
-      document.addEventListener("mousemove", resizeFileList);
-      document.addEventListener("mouseup", stopResizeFileList);
-    });
-
-    dragHandle.addEventListener("dblclick", function() {
-      fileList.classList.toggle("collapsed");
-    });
-
-    function resizeFileList(event) {
-      var offsetX = event.clientX - mouseDownX;
-      fileList.style.width = (initialWidth + offsetX) + "px";
-    }
-
-    function stopResizeFileList() {
-      document.removeEventListener("mousemove", resizeFileList);
-      document.removeEventListener("mouseup", stopResizeFileList);
-      initialWidth = fileList.offsetWidth;
-    }
-
-    // Function to load the content of a selected file by navigating to the URL
-    function loadFileContent(file) {
-      var buttons = document.getElementsByClassName("button");
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("active");
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\(', '\)']],
+        displayMath: [['$$', '$$'], ['\[', '\]']],
+        processEscapes: true,
+        packages: {'[+]': ['ams', 'color', 'boldsymbol']}
+      },
+      loader: {load: ['[tex]/ams', '[tex]/color', '[tex]/boldsymbol']},
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
       }
-
-      if (file.endsWith("/")) {
-        window.location.href = file;
-      } else {
-        document.getElementById("fileContent").src = file;
-        event.target.classList.add("active");
-        var downloadButton = document.getElementById("downloadButton");
-        downloadButton.href = file;
-        downloadButton.style.display = "inline-block";
-
-        var openButton = document.getElementById("openButton");
-        openButton.style.display = "inline-block"; // Show the open button
-      }
-    }
-
-    // Function to reset the buttons to their initial state
-    function resetButtons() {
-      var buttons = document.getElementsByClassName("button");
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("active");
-      }
-
-      var downloadButton = document.getElementById("downloadButton");
-      downloadButton.style.display = "none"; // Hide the download button
-
-      var openButton = document.getElementById("openButton");
-      openButton.style.display = "none"; // Hide the open button
-    }
-    // Event listener for open button click
-    var openButton = document.getElementById("openButton");
-    openButton.addEventListener("click", function() {
-      var fileContentSrc = document.getElementById("fileContent").src;
-      window.open(fileContentSrc, "_blank");
-    });
-
-    // Event listener for file list button clicks
-    var fileListItems = document.getElementById("fileListItems");
-    fileListItems.addEventListener("click", function(event) {
-      if (event.target && event.target.nodeName === "BUTTON") {
-        var file = event.target.getAttribute("data-file-path");
-        loadFileContent(file);
-      }
-    });
-
-    // Function to determine the icon class based on whether a line is a file or folder
-    function getIconClass(line) {
-      return line.endsWith("/") ? "folder-icon" : "file-icon";
-    }
-
-    // Function to filter the file list based on the search input
-    function filterFileList(searchText) {
-      var fileList = document.getElementById("fileListItems");
-      var items = fileList.getElementsByTagName("li");
-
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var button = item.getElementsByClassName("button")[0];
-        var line = button.getAttribute("data-file-path").toLowerCase();
-
-        if (line.includes(searchText.toLowerCase())) {
-          item.style.display = "block";
-        } else {
-          item.style.display = "none";
-        }
-      }
-    }
-
-    // Function to populate the file list
-    function populateFileList() {
-      var fileList = document.getElementById("fileListItems");
-      fileList.innerHTML = ""; // Clear the previous list
-
-      var listItem = document.createElement("li");
-      var button = document.createElement("button");
-      button.textContent = "..";
-      button.classList.add("button");
-      button.classList.add("folder-icon");
-      button.setAttribute("data-file-path", "../"); // Change this to the appropriate URL for the encompassing folder
-      button.addEventListener("click", function(event) {
-        event.preventDefault(); // Prevent default behavior of opening the link
-        loadFileContent("../"); // Change this to the appropriate URL for the encompassing folder
-      });
-
-      listItem.appendChild(button);
-      fileList.appendChild(listItem);
-
-      // Make a request to fetch the file list text file
-      fetch("file_list.txt")
-        .then(response => response.text())
-        .then(data => {
-          var lines = data.trim().split("\n");
-          lines.forEach(line => {
-            // Remove trailing "/" and ".html" extension
-            var filePath = line.replace(/\/$/, "").replace(/\.html$/, "");
-
-            var listItem = document.createElement("li");
-            var button = document.createElement("button");
-            button.textContent = filePath;
-            button.classList.add("button");
-            button.classList.add(getIconClass(line));
-            button.setAttribute("data-file-path", line);
-            button.addEventListener("click", function(event) {
-              event.preventDefault(); // Prevent default behavior of opening the link
-              loadFileContent(line);
-            });
-
-            listItem.appendChild(button);
-            fileList.appendChild(listItem);
-          });
-        })
-        .catch(error => console.error(error));
-    }
-
-    // Event listener for search bar input
-    var searchBar = document.getElementById("searchBar");
-    searchBar.addEventListener("input", function(event) {
-      var searchText = event.target.value;
-      filterFileList(searchText);
-    });
-
-    // Call the function to populate the file list on page load
-    populateFileList();
-
+    };
   </script>
+  
+  <!-- Load MathJax from CDN -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <script>
+    // JavaScript to handle expand/collapse functionality
+    function expandAll() {
+      const detailsElements = document.querySelectorAll("details");
+      detailsElements.forEach(detail => {
+        detail.open = true;
+      });
+    }
+
+    function collapseAll() {
+      const detailsElements = document.querySelectorAll("details");
+      detailsElements.forEach(detail => {
+        detail.open = false;
+      });
+    }
+  </script>
+
 </body>
 </html>
+      
