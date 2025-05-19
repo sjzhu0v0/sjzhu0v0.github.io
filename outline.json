@@ -72,7 +72,8 @@
       "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its",
       "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_its_only",
       "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter",
-      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation"
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation",
+      "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_minbias_DQfilter_comparison"
     ]
   },
   "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_tpc_its": {
@@ -94,6 +95,13 @@
     "title": "Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron",
     "description": "",
     "content": []
+  },
+  "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_minbias_DQfilter_comparison": {
+    "title": "Comparison of MinBias and DQ Filter",
+    "description": "",
+    "content": [
+      "./plot/event_chararteristics_mult_classifier/Comparison_mb_dqfilter_NumContributor.pdf"
+    ]
   },
   "event_chararteristics_forward_detector_response": {
     "title": "Forward Detector Response",
