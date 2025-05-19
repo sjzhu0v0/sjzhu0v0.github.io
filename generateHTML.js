@@ -55,7 +55,8 @@ fs.exists(jsonFilePath, (exists) => {
 
     // Function to generate HTML content from JSON data
     async function generateHTML(section, parentId, heading = '') {
-      let newTitle = heading + section.title;
+      // let newTitle = heading + section.title;
+      let newTitle = ``;
       let html = `
       <div class="section" id="${parentId}"><h2>${newTitle}</h2><p>${section.description.replace(/\n/g, '<br>')}</p>`;
       // Loop through content
@@ -188,7 +189,7 @@ fs.exists(jsonFilePath, (exists) => {
 
         else if (jsonData[item]) {
           html += `
-          <details id="${item}"><summary>${jsonData[item].title}
+          <details id="${item}"><summary>${heading}${jsonData[item].title}
           </summary>`;
           let newHeading = heading + '----';
           html += await generateHTML(jsonData[item], item, newHeading);
@@ -210,8 +211,8 @@ fs.exists(jsonFilePath, (exists) => {
           <button onclick="collapseAll()">Collapse All</button>
       `;
 
-      function generateLinks(section, parentId, heading = '') {
-        sidebarHTML += `<a href="#${parentId}">${heading}${section.title}</a>`;
+      function generateLinks(section, parentId, heading = '', heading2 = '') {
+        sidebarHTML += `<a href="#${parentId}">${heading2}Go To</a>`;
         section.content.forEach(item => {
           if (item.endsWith('.jpg') || item.endsWith('.pdf') || item.endsWith('.json')) {
             return;
@@ -219,16 +220,16 @@ fs.exists(jsonFilePath, (exists) => {
           if (jsonData[item]) {
             sidebarHTML += `
             <details>
-            <summary>${heading}${jsonData[item].title}</summary>`;
+            <summary> ${heading}${jsonData[item].title}</summary>`;
             headingNew = heading + '----';
-            generateLinks(jsonData[item], item, headingNew);
+            generateLinks(jsonData[item], item, headingNew, heading);
             sidebarHTML += `
             </details>`;
           }
         });
       }
 
-      generateLinks(jsonData.main, 'section1', '----');
+      generateLinks(jsonData.main, 'section1', '----', '');
 
       sidebarHTML += `
       </div>`;
