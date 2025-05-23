@@ -130,63 +130,69 @@ fs.exists(jsonFilePath, (exists) => {
         } else if (item.endsWith('.jpg')) {
           html += `<img src="${item}" alt="${section.title} image">`;
         } else if (item.endsWith('.json')) {
-          let isRemote = item.startsWith('http://') || item.startsWith('https://');
-          let jsonContentOrUrl = isRemote ? item : fs.readFileSync(item, 'utf8');
-          html += `
-          <div class="section" id="root_plot_${num_files}" style="position: relative;">
-            <p>Loading plot from ${isRemote ? jsonContentOrUrl : 'embedded JSON'}...</p>
-          </div>
-          <script>
-            async function display_root_plot_${num_files}(Core) {
-              try {
-                let obj;
-                if (${isRemote}) {
-                  const response = await fetch('${jsonContentOrUrl}');
-                  const jsonText = await response.text();
-                  obj = Core.parse(jsonText);
-                } else {
-                  obj = Core.parse(${JSON.stringify(jsonContentOrUrl)});
-                }
-                Core.settings.HandleKeys = false;
-                Core.draw("root_plot_${num_files}", obj, "");
-              } catch (err) {
-                document.getElementById("root_plot_${num_files}").innerHTML = "Failed to load JSON data.";
-                console.error('Error loading JSON:', err);
-              }
-            }
-        
-            function script_load_root_plot_${num_files}(src, on_error) {
-              let script = document.createElement('script');
-              script.src = src;
-              script.onload = function () { display_root_plot_${num_files}(JSROOT); };
-              script.onerror = function () { script.remove(); on_error(); };
-              document.head.appendChild(script);
-            }
-        
-            if (typeof requirejs !== 'undefined') {
-              requirejs.config({
-                paths: { 'JSRootCore': ['build/jsroot', 'https://root.cern/js/7.4.3/build/jsroot', 'https://jsroot.gsi.de/7.4.3/build/jsroot'] }
-              })(['JSRootCore'], function (Core) {
-                display_root_plot_${num_files}(Core);
-              });
-            } else if (typeof JSROOT !== 'undefined') {
-              display_root_plot_${num_files}(JSROOT);
-            } else {
-              try {
-                var base_url = JSON.parse(document.getElementById('jupyter-config-data')?.innerHTML || '{}').baseUrl || '/';
-              } catch (_) {
-                var base_url = '/';
-              }
-              script_load_root_plot_${num_files}(base_url + 'static/build/jsroot.js', function () {
-                console.error('Fail to load JSROOT locally, please check your jupyter_notebook_config.py file');
-                script_load_root_plot_${num_files}('https://root.cern/js/7.4.3/build/jsroot.js', function () {
-                  document.getElementById("root_plot_${num_files}").innerHTML = "Failed to load JSROOT";
-                });
-              });
-            }
-          </script>`;
-        }
+          try {
+            const resolvedFiles = await resolveWildcardPattern(item);
+            resolvedFiles.forEach(file => {
+              num_files++;
+              let content_from_json = fs.readFileSync(file, 'utf8');
+              // html += content_from_json;
+              // html += `num_files: ` + num_files;
+              html += `
+        <div class="section" id="root_plot_` + num_files + `" position: relative">
+        </div> 
+        <script>
+          function display_root_plot_` + num_files + `(Core) {
+            let obj = Core.parse(` + content_from_json + `);
+            Core.settings.HandleKeys = false;
+            Core.draw("root_plot_` + num_files + `", obj, "");
+          }
 
+          function script_load_root_plot_` + num_files + `(src, on_error) {
+            let script = document.createElement('script');
+            script.src = src;
+            script.onload = function () { display_root_plot_` + num_files + `(JSROOT); };
+            script.onerror = function () { script.remove(); on_error(); };
+            document.head.appendChild(script);
+          }
+
+          if (typeof requirejs !== 'undefined') {
+
+            // We are in jupyter notebooks, use require.js which should be configured already
+            requirejs.config({
+              paths: { 'JSRootCore': ['build/jsroot', 'https://root.cern/js/7.4.3/build/jsroot', 'https://jsroot.gsi.de/7.4.3/build/jsroot'] }
+            })(['JSRootCore'], function (Core) {
+              display_root_plot_` + num_files + `(Core);
+            });
+
+          } else if (typeof JSROOT !== 'undefined') {
+
+            // JSROOT already loaded, just use it
+            display_root_plot_` + num_files + `(JSROOT);
+
+          } else {
+
+            // We are in jupyterlab without require.js, directly loading jsroot
+            // Jupyterlab might be installed in a different base_url so we need to know it.
+            try {
+              var base_url = JSON.parse(document.getElementById('jupyter-config-data').innerHTML).baseUrl;
+            } catch (_) {
+              var base_url = '/';
+            }
+
+            // Try loading a local version of requirejs and fallback to cdn if not possible.
+            script_load_root_plot_` + num_files + `(base_url + 'static/build/jsroot.js', function () {
+              console.error('Fail to load JSROOT locally, please check your jupyter_notebook_config.py file');
+              script_load_root_plot_` + num_files + `('https://root.cern/js/7.4.3/build/jsroot.js', function () {
+                document.getElementById("root_plot_` + num_files + `").innerHTML = "Failed to load JSROOT";
+              });
+            });
+          } 
+           </script>`;
+            });
+          } catch (err) {
+            console.error(`Error resolving wildcard pattern "${item}":`, err);
+          }
+        }
         else if (item.endsWith('.jpg')) {
           html += `<img src="${item}" alt="${section.title} image">`;
         }
@@ -196,10 +202,6 @@ fs.exists(jsonFilePath, (exists) => {
               <p>Embedded PDF: <a href="${item}" target="_blank">${item}</a></p>
               <embed src="${item}" width="800" height="600" type="application/pdf">
             </div>`;
-        }
-        else if (item.endsWith('.json')) {
-          let content_from_json = fs.readFileSync(item, 'utf8');
-          html += `...你的现有JSON处理逻辑...`;
         }
         else if (item.startsWith("Description:")) {
           html += `<p>${item.replace(/\\n/g, '<br>')}</p>`;
