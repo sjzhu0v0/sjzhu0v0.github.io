@@ -92,7 +92,10 @@
   "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_exclude_jpsi_daughter": {
     "title": "Exclude $J/\\psi$ Daughter",
     "description": "",
-    "content": []
+    "content": [
+      "./plot/event_chararteristics_mult_classifier/NJpsiCandidatePerEvent_NJpsiCandidata.pdf",
+      "Description: The distribution of the number of J/\\psi candidates per event is shown. The dataset is LHC22_pass4_thin with DQ filter. Event selection is $|V_{z}|<10cm$. The first bin 0 of x-axis means that there is no J/\\psi candidate in these events. As can be seen in the plots, the ratio of the second bin to the first bin and the ratio of the second bin to the third bin are both very small. So when the $J/\\psi\\ v_2$ is studied, the dominate part is the single-$J/\\psi$ event. \\n \\n "
+    ]
   },
   "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation": {
     "title": "Check of Correlation Between Multiplicity and Q-Vector of Charge Hadron",
@@ -104,7 +107,7 @@
     "description": "",
     "content": [
       "./plot/event_chararteristics_mult_classifier/Comparison_mb_dqfilter_NumContributor.pdf",
-      "Description: The distributions of number of vertex contributors are compared between minbias and DQ filter. The dataset is LHC22o_pass4_thin_526641. Both distributions are normalized so the integral of them is equal to each other. The event selection is: $|V_{z}|<10cm$, isTriggerTVX, noITSROFFrameBorder, noTimeFrameBorder, noSameBunchPileup. \\n The event activities for minbias and DQ filter are very different."
+      "Description: The distributions of number of vertex contributors are compared between minbias and DQ filter. The dataset is LHC22o_pass4_thin_526641. Both distributions are normalized so the integral of them is equal to each other. The event selection is: $|V_{z}|<10cm$, isTriggerTVX, noITSROFFrameBorder, noTimeFrameBorder, noSameBunchPileup. \\n The event activities for minbias and DQ filter are very different. \\n \\n "
     ]
   },
   "event_chararteristics_forward_detector_response": {

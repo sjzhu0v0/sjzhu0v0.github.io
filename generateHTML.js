@@ -58,7 +58,7 @@ fs.exists(jsonFilePath, (exists) => {
       // let newTitle = heading + section.title;
       let newTitle = ``;
       let html = `
-      <div class="section" id="${parentId}"><h2>${newTitle}</h2><p>${section.description.replace(/\n/g, '<br>')}</p>`;
+      <div class="section" id="${parentId}"><h2>${newTitle}</h2><p>${section.description.replace(/ \\n /g, '<br>')}</p>`;
       // Loop through content
       for (let item of section.content) {
         num_files++;
@@ -202,7 +202,7 @@ fs.exists(jsonFilePath, (exists) => {
           html += `...你的现有JSON处理逻辑...`;
         }
         else if (item.startsWith("Description:")) {
-          html += `<p>${item}</p>`;
+          html += `<p>${item.replace(/\\n/g, '<br>')}</p>`;
         }
         else if (jsonData[item]) {
           html += `
