@@ -94,7 +94,7 @@
     "description": "",
     "content": [
       "./plot/event_chararteristics_mult_classifier/NJpsiCandidatePerEvent_NJpsiCandidata.pdf",
-      "Description: The distribution of the number of J/\\psi candidates per event is shown. The dataset is LHC22_pass4_thin with DQ filter. Event selection is $|V_{z}|<10cm$. The first bin 0 of x-axis means that there is no J/\\psi candidate in these events. As can be seen in the plots, the ratio of the second bin to the first bin and the ratio of the second bin to the third bin are both very small. So when the $J/\\psi\\ v_2$ is studied, the dominate part is the single-$J/\\psi$ event. \\n \\n "
+      "Description: The distribution of the number of $J/\\psi$ candidates per event is shown. The dataset is LHC22_pass4_thin with DQ filter. Event selection is $|V_{z}|<10cm$. The first bin 0 of x-axis means that there is no J/\\psi candidate in these events. As can be seen in the plots, the ratio of the second bin to the first bin and the ratio of the second bin to the third bin are both very small. So when the $J/\\psi\\ v_2$ is studied, the dominate part is the single-$J/\\psi$ event. \\n \\n "
     ]
   },
   "event_chararteristics_mult_classifier_track_multiplicity_midrapidity_check_correlation": {
